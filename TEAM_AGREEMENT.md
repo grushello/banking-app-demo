@@ -37,7 +37,6 @@ Use the following branch naming pattern:
 - `docs` — changes to documentation
 - `test` — test-related work
 - `build` — project setup, build tools, or dependency changes
-- `ci` — CI/CD changes
 - `refactor` — code restructuring that neither fixes a bug nor adds a feature
 - `chore` — maintenance work or miscellaneous tasks
 
@@ -45,15 +44,14 @@ Use the following branch naming pattern:
 
 #### Rules
 - Do not commit directly to `main`.
-- Do not commit directly to `develop` unless the team explicitly agrees.
+- Do not commit directly to `dev` unless the team explicitly agrees.
 - Create a dedicated branch for each task or issue.
 - Keep PRs focused and reasonably small.
 - Use a clear PR title.
 - Ensure the branch is up to date before requesting review.
 - Verify that the application builds and the relevant checks pass before merging.
-- Get at least two approvals from other team members before merging.
 
-- **Approvals:** Every Pull Request requires at least **2 approvals** from other team members before it can be merged.
+- **Approvals:** Every Pull Request requires at least **1 approval** from other team members before it can be merged.
 - **Reviewers:** Reviewers can be anyone from the team (no need for tagging).
 - **Merge Conflicts:** The author of the Pull Request is responsible for resolving any merge conflicts.
 - **PR Linking Rule:** Every Pull Request **must** be linked to its corresponding GitHub Issue. Use keywords like "Resolves #1" or "Closes #1" in the PR description, or use the GitHub UI to link it, so the project board updates automatically.
