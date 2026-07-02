@@ -1,4 +1,6 @@
 package com.example.banking.model;
 
-public class Role {
+public enum Role {
+        CUSTOMER,
+        ADMIN
 }
