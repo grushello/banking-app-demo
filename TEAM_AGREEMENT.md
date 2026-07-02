@@ -2,7 +2,7 @@
 
 ## Coding Standards & Work Conventions
 
-- **Language:** Java 17+ using Spring Boot best practices.
+- **Language:** Java 21 using Spring Boot best practices.
 - **Code Style:** Follow standard Java naming conventions (camelCase for variables/methods, PascalCase for classes).
 - **Format:** Use automated IDE formatting before committing.
 - **Branching:** Do all work on your own branches cut from `dev`.
