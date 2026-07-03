@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.example.banking.dto.request.TransferRequest;
-import com.example.banking.dto.response.TransferResponse;
+import com.example.banking.dto.request.TransferRequestDTO;
+import com.example.banking.dto.response.TransferResponseDTO;
 import com.example.banking.exception.InsufficientFundsException;
 import com.example.banking.exception.ResourceNotFoundException;
 import com.example.banking.model.Account;
@@ -23,7 +23,7 @@ public class TransferService {
   private final AccountRepository accountRepository;
   private final TransactionRepository transactionRepository;
 
-  public synchronized TransferResponse transfer(TransferRequest request) {
+  public synchronized TransferResponseDTO transfer(TransferRequestDTO request) {
     Account accountFrom = accountRepository.findById(request.fromAccountId())
         .orElseThrow(() -> new ResourceNotFoundException("Source account not found"));
 
@@ -60,6 +60,7 @@ public class TransferService {
     transactionRepository.save(outgoing);
     transactionRepository.save(incoming);
 
-    return TransferResponse.from(outgoing, incoming);
+    String transferTransactionId = outgoing.getId() + "-" + incoming.getId();
+    return TransferResponseDTO.success(transferTransactionId, createdAt);
   }
 }

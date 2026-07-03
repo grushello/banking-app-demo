@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.banking.dto.request.TransferRequest;
-import com.example.banking.dto.response.TransferResponse;
+import com.example.banking.dto.request.TransferRequestDTO;
+import com.example.banking.dto.response.TransferResponseDTO;
 import com.example.banking.service.TransferService;
 
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class TransferController {
   private final TransferService transferService;
 
   @PostMapping
-  public ResponseEntity<TransferResponse> transfer(@Valid @RequestBody TransferRequest request) {
+  public ResponseEntity<TransferResponseDTO> transfer(@Valid @RequestBody TransferRequestDTO request) {
     return ResponseEntity.ok(transferService.transfer(request));
   }
 }
