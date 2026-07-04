@@ -1,6 +1,6 @@
 package com.example.banking.model;
 
-public enum TransactionType {
+public enum TransferType {
     DEPOSIT,
     WITHDRAWAL,
     TRANSFER_IN,

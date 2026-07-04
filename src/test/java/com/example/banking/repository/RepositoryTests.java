@@ -1,8 +1,8 @@
 package com.example.banking.repository;
 
 import com.example.banking.model.Account;
-import com.example.banking.model.Transaction;
-import com.example.banking.model.TransactionType;
+import com.example.banking.model.Transfer;
+import com.example.banking.model.TransferType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class RepositoryTests {
 
     private AccountRepository accountRepository;
-    private TransactionRepository transactionRepository;
+    private TransferRepository transferRepository;
 
     @BeforeEach
     void setUp() {
         accountRepository = new AccountRepository();
-        transactionRepository = new TransactionRepository();
+        transferRepository = new TransferRepository();
     }
 
     @Test
@@ -41,24 +41,24 @@ class RepositoryTests {
     }
 
     @Test
-    void testTransactionRepository() {
+    void testTransferRepository() {
         UUID accountId = UUID.randomUUID();
         Account account = new Account(accountId, "TR12345", "John Doe", BigDecimal.ZERO);
         
-        Transaction t1 = new Transaction(UUID.randomUUID(), account, TransactionType.DEPOSIT, new BigDecimal("100"), LocalDateTime.now(), "Deposit 1");
-        Transaction t2 = new Transaction(UUID.randomUUID(), account, TransactionType.WITHDRAWAL, new BigDecimal("50"), LocalDateTime.now(), "Withdraw 1");
+        Transfer t1 = new Transfer(UUID.randomUUID(), account, TransferType.DEPOSIT, new BigDecimal("100"), LocalDateTime.now(), "Deposit 1");
+        Transfer t2 = new Transfer(UUID.randomUUID(), account, TransferType.WITHDRAWAL, new BigDecimal("50"), LocalDateTime.now(), "Withdraw 1");
         
         Account otherAccount = new Account(UUID.randomUUID(), "TR99999", "Jane Doe", BigDecimal.ZERO);
-        Transaction t3 = new Transaction(UUID.randomUUID(), otherAccount, TransactionType.DEPOSIT, new BigDecimal("200"), LocalDateTime.now(), "Other deposit");
+        Transfer t3 = new Transfer(UUID.randomUUID(), otherAccount, TransferType.DEPOSIT, new BigDecimal("200"), LocalDateTime.now(), "Other deposit");
         
-        transactionRepository.save(t1);
-        transactionRepository.save(t2);
-        transactionRepository.save(t3);
+        transferRepository.save(t1);
+        transferRepository.save(t2);
+        transferRepository.save(t3);
         
-        List<Transaction> accountTransactions = transactionRepository.findByAccountId(accountId);
-        assertEquals(2, accountTransactions.size());
-        assertTrue(accountTransactions.contains(t1));
-        assertTrue(accountTransactions.contains(t2));
-        assertFalse(accountTransactions.contains(t3));
+        List<Transfer> accountTransfers = transferRepository.findByUserId(accountId);
+        assertEquals(2, accountTransfers.size());
+        assertTrue(accountTransfers.contains(t1));
+        assertTrue(accountTransfers.contains(t2));
+        assertFalse(accountTransfers.contains(t3));
     }
 }

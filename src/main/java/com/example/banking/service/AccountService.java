@@ -3,40 +3,49 @@ package com.example.banking.service;
 import com.example.banking.dto.request.CreateAccountRequest;
 import com.example.banking.dto.response.AccountResponse;
 import com.example.banking.dto.response.ApiResponse;
+import com.example.banking.exception.ResourceNotFoundException;
 import com.example.banking.model.Account;
+import com.example.banking.model.User;
 import com.example.banking.repository.AccountRepository;
+import com.example.banking.repository.UserRepository;
 import com.example.banking.util.IbanUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
 @Service
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    public AccountService(AccountRepository accountRepository) {
+    private final UserRepository userRepository;
+    public AccountService(AccountRepository accountRepository,
+                          UserRepository userRepository) {
         this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     public ResponseEntity<ApiResponse<AccountResponse>> createAccount(CreateAccountRequest request) {
 
-        /// TO do Validation - Name Mandatory
+        User owner = userRepository.findByUsername(request.getOwnerName())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         Account account = Account.builder()
                 .id(UUID.randomUUID())
                 .iban(IbanUtil.generateIban())
-                .ownerName(request.getOwnerName())
+                .ownerName(owner.getUsername())
                 .balance(request.getBalance())
                 .build();
 
         // Repo
         accountRepository.save(account);
 
-        ///  To do Confirm to return Full bank account details or masked
         AccountResponse response =  AccountResponse.builder()
                 .id(account.getId())
                 .iban(IbanUtil.maskIban(account.getIban()))
                 .ownerName(account.getOwnerName())
+                .balance(account.getBalance())
                 .build();
 
         ApiResponse<AccountResponse> apiResponse =
@@ -51,9 +60,7 @@ public class AccountService {
         Account account = accountRepository.findById(id).orElse(null);
 
         if (account == null) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>("Account not found", null));
+            throw new ResourceNotFoundException("Account not found");
         }
 
         AccountResponse response = AccountResponse.builder()

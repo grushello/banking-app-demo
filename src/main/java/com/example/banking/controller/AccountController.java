@@ -3,11 +3,12 @@ package com.example.banking.controller;
 import com.example.banking.dto.request.CreateAccountRequest;
 import com.example.banking.dto.response.AccountResponse;
 import com.example.banking.dto.response.ApiResponse;
-import com.example.banking.dto.response.TransactionResponse;
+import com.example.banking.dto.response.TransferResponse;
 import com.example.banking.service.AccountService;
-import com.example.banking.service.TransactionService;
+import com.example.banking.service.TransferService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,15 +18,15 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
-    private final TransactionService transactionService;
+    private final TransferService transferService;
 
-    public AccountController(AccountService accountService, TransactionService transactionService) {
+    public AccountController(AccountService accountService, TransferService transferService) {
         this.accountService = accountService;
-        this.transactionService = transactionService;
+        this.transferService = transferService;
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AccountResponse>> createAccount(@RequestBody CreateAccountRequest request) {
+    public ResponseEntity<ApiResponse<AccountResponse>> createAccount(@Valid @RequestBody CreateAccountRequest request) {
         return accountService.createAccount(request);
     }
 
@@ -36,10 +37,10 @@ public class AccountController {
     }
 
     @GetMapping("/{id}/transactions")
-    public ResponseEntity<List<TransactionResponse>> getTransactions(
-            @PathVariable String id) {
+    public ResponseEntity<List<TransferResponse>> getTransactions(
+            @PathVariable UUID id) {
 
-        return ResponseEntity.ok(transactionService.getAccountStatement(id));
+        return ResponseEntity.ok(transferService.getAccountStatement(id));
     }
 
 }

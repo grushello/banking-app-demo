@@ -11,9 +11,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class User {
-    private final UUID id;
-    private String username;
 
-    @Setter String passwordHash;
-    @Setter private Role role;
+    private final UUID id;
+    private final String username;
+
+    @Setter
+    private String passwordHash;
+
+    @Setter
+    private Role role;
 }

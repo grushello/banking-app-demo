@@ -1,0 +1,55 @@
+### Create User 1
+
+POST http://localhost:3100/user
+Content-Type: application/json
+
+{
+  "username": "qwe",
+  "password": "password123"
+}
+
+### Create account 1
+POST http://localhost:3100/account
+Content-Type: application/json
+
+{
+  "ownerName": "qwe",
+  "balance": 500
+}
+### Create User 2
+
+POST http://localhost:3100/user
+Content-Type: application/json
+
+{
+  "username": "zxc",
+  "password": "password456"
+}
+### Create account 2
+POST http://localhost:3100/account
+Content-Type: application/json
+
+{
+  "ownerName": "Bob",
+  "balance": 500
+}
+
+### Transfer
+POST http://localhost:3100/transfer
+Content-Type: application/json
+
+{
+  "fromAccountId": "<accountid>",
+  "toAccountId": "<accountid>",
+  "amount": 200,
+  "note": "Test transfer"
+}
+
+### get account
+GET http://localhost:3100/account/<account-id>
+
+### get account transactions
+GET http://localhost:3100/account/<account-id>/transactions
+
+### Get User
+GET http://localhost:3100/user/<userid>
