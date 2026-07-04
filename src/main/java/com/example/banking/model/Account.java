@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class Account {
 
-    private final UUID userId;
+    private final UUID id;
     private final String iban;
 
     @Setter

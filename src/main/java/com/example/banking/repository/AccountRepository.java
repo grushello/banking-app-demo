@@ -13,7 +13,7 @@ public class AccountRepository {
     private final Map<UUID, Account> accounts = new ConcurrentHashMap<>();
     
     public Account save(Account account) {
-        accounts.put(account.getUserId(), account);
+        accounts.put(account.getId(), account);
         return account;
     }
     
