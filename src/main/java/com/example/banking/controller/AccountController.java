@@ -3,9 +3,9 @@ package com.example.banking.controller;
 import com.example.banking.dto.request.CreateAccountRequest;
 import com.example.banking.dto.response.AccountResponse;
 import com.example.banking.dto.response.ApiResponse;
-import com.example.banking.dto.response.TransactionResponse;
+import com.example.banking.dto.response.TransferResponse;
 import com.example.banking.service.AccountService;
-import com.example.banking.service.TransactionService;
+import com.example.banking.service.TransferService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +17,11 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
-    private final TransactionService transactionService;
+    private final TransferService transferService;
 
-    public AccountController(AccountService accountService, TransactionService transactionService) {
+    public AccountController(AccountService accountService, TransferService transferService) {
         this.accountService = accountService;
-        this.transactionService = transactionService;
+        this.transferService = transferService;
     }
 
     @PostMapping
@@ -35,11 +35,11 @@ public class AccountController {
         return accountService.getAccount(id);
     }
 
-    @GetMapping("/{id}/transactions")
-    public ResponseEntity<List<TransactionResponse>> getTransactions(
+    @GetMapping("/{id}/transfers")
+    public ResponseEntity<List<TransferResponse>> getTransfers(
             @PathVariable String id) {
 
-        return ResponseEntity.ok(transactionService.getAccountStatement(id));
+        return ResponseEntity.ok(transferService.getAccountStatement(id));
     }
 
 }

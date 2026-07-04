@@ -1,12 +1,12 @@
 package com.example.banking.dto.response;
 
-import com.example.banking.model.Transaction;
+import com.example.banking.model.Transfer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransactionResponse(
+public record TransferResponse(
         String id,
         String type,
         BigDecimal amount,
@@ -20,13 +20,13 @@ public record TransactionResponse(
         String note
 ) {
 
-    public static TransactionResponse fromEntity(Transaction transaction) {
-        return new TransactionResponse(
-                transaction.getId().toString(),
-                transaction.getType().name(),
-                transaction.getAmount(),
-                transaction.getCreatedAt(),
-                transaction.getNote()
+    public static TransferResponse fromEntity(Transfer transfer) {
+        return new TransferResponse(
+                transfer.getId().toString(),
+                transfer.getType().name(),
+                transfer.getAmount(),
+                transfer.getCreatedAt(),
+                transfer.getNote()
         );
     }
 }

@@ -1,12 +1,12 @@
 package com.example.banking.service;
 
-import com.example.banking.dto.response.TransactionResponse;
+import com.example.banking.dto.response.TransferResponse;
 import com.example.banking.exception.ResourceNotFoundException;
 import com.example.banking.model.Account;
-import com.example.banking.model.Transaction;
-import com.example.banking.model.TransactionType;
+import com.example.banking.model.Transfer;
+import com.example.banking.model.TransferType;
 import com.example.banking.repository.AccountRepository;
-import com.example.banking.repository.TransactionRepository;
+import com.example.banking.repository.TransferRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,21 +17,21 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TransactionServiceTest {
+class TransferServiceTest {
 
     private AccountRepository accountRepository;
-    private TransactionRepository transactionRepository;
-    private TransactionService transactionService;
+    private TransferRepository transferRepository;
+    private TransferService transferService;
 
     @BeforeEach
     void setUp() {
         accountRepository = new AccountRepository();
-        transactionRepository = new TransactionRepository();
-        transactionService = new TransactionService(transactionRepository, accountRepository);
+        transferRepository = new TransferRepository();
+        transferService = new TransferService(transferRepository, accountRepository);
     }
 
     @Test
-    void shouldReturnTransactionsSortedByNewestFirst() {
+    void shouldReturnTransfersSortedByNewestFirst() {
 
         // Arrange
         UUID accountId = UUID.randomUUID();
@@ -45,30 +45,30 @@ class TransactionServiceTest {
 
         accountRepository.save(account);
 
-        Transaction olderTransaction = new Transaction(
+        Transfer olderTransfer = new Transfer(
                 UUID.randomUUID(),
                 account,
-                TransactionType.DEPOSIT,
+                TransferType.DEPOSIT,
                 new BigDecimal("100"),
                 LocalDateTime.now().minusDays(1),
                 "Older deposit"
         );
 
-        Transaction newerTransaction = new Transaction(
+        Transfer newerTransfer = new Transfer(
                 UUID.randomUUID(),
                 account,
-                TransactionType.WITHDRAWAL,
+                TransferType.WITHDRAWAL,
                 new BigDecimal("50"),
                 LocalDateTime.now(),
                 "New withdrawal"
         );
 
-        transactionRepository.save(olderTransaction);
-        transactionRepository.save(newerTransaction);
+        transferRepository.save(olderTransfer);
+        transferRepository.save(newerTransfer);
 
         // Act
-        List<TransactionResponse> result =
-                transactionService.getAccountStatement(accountId.toString());
+        List<TransferResponse> result =
+                transferService.getAccountStatement(accountId.toString());
 
         // Assert
         assertEquals(2, result.size());
@@ -77,7 +77,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenAccountHasNoTransactions() {
+    void shouldReturnEmptyListWhenAccountHasNoTransfers() {
 
         // Arrange
         UUID accountId = UUID.randomUUID();
@@ -92,8 +92,8 @@ class TransactionServiceTest {
         accountRepository.save(account);
 
         // Act
-        List<TransactionResponse> result =
-                transactionService.getAccountStatement(accountId.toString());
+        List<TransferResponse> result =
+                transferService.getAccountStatement(accountId.toString());
 
         // Assert
         assertTrue(result.isEmpty());
@@ -108,12 +108,12 @@ class TransactionServiceTest {
         // Act + Assert
         assertThrows(
                 ResourceNotFoundException.class,
-                () -> transactionService.getAccountStatement(accountId.toString())
+                () -> transferService.getAccountStatement(accountId.toString())
         );
     }
 
     @Test
-    void shouldMapTransactionToTransactionResponse() {
+    void shouldMapTransferToTransferResponse() {
 
         // Arrange
         UUID accountId = UUID.randomUUID();
@@ -127,27 +127,27 @@ class TransactionServiceTest {
 
         accountRepository.save(account);
 
-        Transaction transaction = new Transaction(
+        Transfer transfer = new Transfer(
                 UUID.randomUUID(),
                 account,
-                TransactionType.DEPOSIT,
+                TransferType.DEPOSIT,
                 new BigDecimal("250"),
                 LocalDateTime.now(),
                 "Salary"
         );
 
-        transactionRepository.save(transaction);
+        transferRepository.save(transfer);
 
         // Act
-        List<TransactionResponse> result =
-                transactionService.getAccountStatement(accountId.toString());
+        List<TransferResponse> result =
+                transferService.getAccountStatement(accountId.toString());
 
         // Assert
-        TransactionResponse response = result.getFirst();
+        TransferResponse response = result.getFirst();
 
-        assertEquals(transaction.getId().toString(), response.id());
-        assertEquals(transaction.getType().name(), response.type());
-        assertEquals(transaction.getAmount(), response.amount());
-        assertEquals(transaction.getNote(), response.note());
+        assertEquals(transfer.getId().toString(), response.id());
+        assertEquals(transfer.getType().name(), response.type());
+        assertEquals(transfer.getAmount(), response.amount());
+        assertEquals(transfer.getNote(), response.note());
     }
 }

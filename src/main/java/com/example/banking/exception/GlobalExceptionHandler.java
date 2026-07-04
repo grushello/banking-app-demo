@@ -24,8 +24,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(InvalidTransactionException.class)
-    public ResponseEntity<String> handleInvalid(InvalidTransactionException ex) {
+    @ExceptionHandler(InvalidTransferException.class)
+    public ResponseEntity<String> handleInvalid(InvalidTransferException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
