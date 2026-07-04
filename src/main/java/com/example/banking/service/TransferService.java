@@ -20,14 +20,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TransferService {
-  private final AccountService accountService;
+  private final AccountRepository accountRepository;
   private final TransactionRepository transactionRepository;
 
   public synchronized TransferResponseDTO transfer(TransferRequestDTO request) {
-    Account accountFrom = accountService.getAccount(request.fromAccountId())
+    Account accountFrom = accountRepository.findById(request.fromAccountId())
         .orElseThrow(() -> new ResourceNotFoundException("Source account not found"));
 
-    Account accountTo = accountService.getAccount(request.toAccountId())
+    Account accountTo = accountRepository.findById(request.toAccountId())
         .orElseThrow(() -> new ResourceNotFoundException("Destination account not found"));
 
     if (accountFrom.getBalance().compareTo(request.amount()) < 0) {
