@@ -1,37 +1,27 @@
-name: Build and Deploy Banking App
+name: Build and Run
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ "main" ]
 
 jobs:
   deploy:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21 (Corretto)
+      - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
+          distribution: corretto
           java-version: '21'
-          distribution: 'corretto'
 
-      - name: Build with Maven
-        run: |
-          chmod +x mvnw
-          ./mvnw clean package -DskipTests
+      - name: Build
+        run: ./mvnw clean package -DskipTests
 
-      - name: Stop old application
+      - name: Restart app
         run: |
-          pkill -f banking || true
-          pkill -f "java -jar" || true
-
-      - name: Start application
-        run: |
-          setsid java -jar target/*.jar \
-            --server.port=3500 \
-            > app.log 2>&1 < /dev/null &
+          pkill -f 'java -jar' || true
+          nohup java -jar target/*.jar > app.log 2>&1 &
