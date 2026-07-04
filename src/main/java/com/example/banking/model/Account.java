@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -17,12 +16,4 @@ public class Account {
 
     @Setter private String ownerName;
     @Setter private BigDecimal balance;
-
-    public void withdraw(BigDecimal amount) {
-        balance = balance.subtract(amount);
-    }
-
-    public void deposit(BigDecimal amount) {
-        balance = balance.add(amount);
-    }
 }
