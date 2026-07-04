@@ -1,4 +1,4 @@
-name: Build Application
+name: Build and Deploy
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: [self-hosted, Linux, X64]
 
     steps:
@@ -20,13 +20,15 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Build with Maven
+      - name: Build JAR
         run: |
-          chmod +x ./mvnw
+          chmod +x mvnw
           ./mvnw clean package -DskipTests
 
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: app
-          path: target/*.jar
+      - name: Stop old app (if running)
+        run: |
+          pkill -f banking || true
+
+      - name: Start app in background (persistent on runner machine)
+        run: |
+          nohup java -jar target/*.jar --server.port=3500 > app.log 2>&1 &
