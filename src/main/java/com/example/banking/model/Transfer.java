@@ -10,10 +10,10 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @Builder
-public class Transaction {
+public class Transfer {
     private final UUID id;
     private final Account account;
-    private final TransactionType type;
+    private final TransferType type;
     private final BigDecimal amount;
     private final LocalDateTime createdAt;
     private final String note;

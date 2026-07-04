@@ -1,18 +1,18 @@
 package com.example.banking.dto.response;
 
+import com.example.banking.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class AccountResponse {
+public class UserResponse {
+
     private UUID id;
-    private String iban;
-    private String ownerName;
-    private BigDecimal balance;
+    private String username;
+    private Role role;
 }

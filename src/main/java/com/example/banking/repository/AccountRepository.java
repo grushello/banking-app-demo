@@ -17,7 +17,7 @@ public class AccountRepository {
         return account;
     }
     
-    public Optional<Account> findById(UUID id) {
-        return Optional.ofNullable(accounts.get(id));
+    public Optional<Account> findById(UUID userId) {
+        return Optional.ofNullable(accounts.get(userId));
     }
 }
