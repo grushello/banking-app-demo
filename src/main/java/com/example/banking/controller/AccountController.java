@@ -8,6 +8,7 @@ import com.example.banking.service.AccountService;
 import com.example.banking.service.TransferService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AccountResponse>> createAccount(@RequestBody CreateAccountRequest request) {
+    public ResponseEntity<ApiResponse<AccountResponse>> createAccount(@Valid @RequestBody CreateAccountRequest request) {
         return accountService.createAccount(request);
     }
 
@@ -35,9 +36,9 @@ public class AccountController {
         return accountService.getAccount(id);
     }
 
-    @GetMapping("/{id}/transfers")
-    public ResponseEntity<List<TransferResponse>> getTransfers(
-            @PathVariable String id) {
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<TransferResponse>> getTransactions(
+            @PathVariable UUID id) {
 
         return ResponseEntity.ok(transferService.getAccountStatement(id));
     }

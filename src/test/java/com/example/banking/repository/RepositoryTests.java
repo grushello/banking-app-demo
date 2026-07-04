@@ -55,7 +55,7 @@ class RepositoryTests {
         transferRepository.save(t2);
         transferRepository.save(t3);
         
-        List<Transfer> accountTransfers = transferRepository.findByAccountId(accountId);
+        List<Transfer> accountTransfers = transferRepository.findByUserId(accountId);
         assertEquals(2, accountTransfers.size());
         assertTrue(accountTransfers.contains(t1));
         assertTrue(accountTransfers.contains(t2));

@@ -13,11 +13,11 @@ public class AccountRepository {
     private final Map<UUID, Account> accounts = new ConcurrentHashMap<>();
     
     public Account save(Account account) {
-        accounts.put(account.getId(), account);
+        accounts.put(account.getUserId(), account);
         return account;
     }
     
-    public Optional<Account> findById(UUID id) {
-        return Optional.ofNullable(accounts.get(id));
+    public Optional<Account> findById(UUID userId) {
+        return Optional.ofNullable(accounts.get(userId));
     }
 }

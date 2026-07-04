@@ -17,9 +17,9 @@ public class TransferRepository {
         return transfer;
     }
 
-    public List<Transfer> findByAccountId(UUID accountId) {
+    public List<Transfer> findByUserId(UUID id) {
         return transfers.stream()
-                .filter(t -> t.getAccount().getId().equals(accountId))
+                .filter(t -> t.getAccount().getUserId().equals(id))
                 .collect(Collectors.toList());
     }
 }

@@ -68,7 +68,7 @@ class TransferServiceTest {
 
         // Act
         List<TransferResponse> result =
-                transferService.getAccountStatement(accountId.toString());
+                transferService.getAccountStatement(accountId);
 
         // Assert
         assertEquals(2, result.size());
@@ -93,7 +93,7 @@ class TransferServiceTest {
 
         // Act
         List<TransferResponse> result =
-                transferService.getAccountStatement(accountId.toString());
+                transferService.getAccountStatement(accountId);
 
         // Assert
         assertTrue(result.isEmpty());
@@ -108,7 +108,7 @@ class TransferServiceTest {
         // Act + Assert
         assertThrows(
                 ResourceNotFoundException.class,
-                () -> transferService.getAccountStatement(accountId.toString())
+                () -> transferService.getAccountStatement(accountId)
         );
     }
 
@@ -140,7 +140,7 @@ class TransferServiceTest {
 
         // Act
         List<TransferResponse> result =
-                transferService.getAccountStatement(accountId.toString());
+                transferService.getAccountStatement(accountId);
 
         // Assert
         TransferResponse response = result.getFirst();

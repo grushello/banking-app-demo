@@ -21,9 +21,8 @@ public class AccountService {
 
     public ResponseEntity<ApiResponse<AccountResponse>> createAccount(CreateAccountRequest request) {
 
-        /// TO do Validation - Name Mandatory
         Account account = Account.builder()
-                .id(UUID.randomUUID())
+                .userId(UUID.randomUUID())
                 .iban(IbanUtil.generateIban())
                 .ownerName(request.getOwnerName())
                 .balance(request.getBalance())
@@ -32,11 +31,11 @@ public class AccountService {
         // Repo
         accountRepository.save(account);
 
-        ///  To do Confirm to return Full bank account details or masked
         AccountResponse response =  AccountResponse.builder()
-                .id(account.getId())
+                .id(account.getUserId())
                 .iban(IbanUtil.maskIban(account.getIban()))
                 .ownerName(account.getOwnerName())
+                .balance(account.getBalance())
                 .build();
 
         ApiResponse<AccountResponse> apiResponse =
@@ -57,7 +56,7 @@ public class AccountService {
         }
 
         AccountResponse response = AccountResponse.builder()
-                .id(account.getId())
+                .id(account.getUserId())
                 .iban(account.getIban())
                 .ownerName(account.getOwnerName())
                 .balance(account.getBalance())
