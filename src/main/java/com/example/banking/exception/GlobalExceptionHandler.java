@@ -58,10 +58,4 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(errors);
     }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleOther(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Unexpected server error");
-    }
 }
