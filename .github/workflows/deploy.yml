@@ -1,0 +1,35 @@
+name: Deploy Application
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Amazon Corretto)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      # 3. Build the application (skipping tests to deploy faster)
+      - name: Build with Maven
+        run: ./mvnw clean package -DskipTests
+
+      # 4. Stop any old version running on port 3500 to prevent conflicts
+      - name: Free Port 3500
+        run: |
+          fuser -k 3500/tcp || true
+
+      # 5. Run the app on port 3500 in the background
+      - name: Start Spring Boot App
+        run: |
+          nohup java -jar target/*.jar --server.port=3500 > app.log 2>&1 &
