@@ -4,19 +4,20 @@ import com.example.banking.dto.request.CreateAccountRequest;
 import com.example.banking.dto.response.AccountResponse;
 import com.example.banking.dto.response.ApiResponse;
 import com.example.banking.model.Account;
+import com.example.banking.repository.AccountRepository;
 import com.example.banking.util.IbanUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class AccountService {
 
-    private final Map<UUID, Account> accounts = new HashMap<>();
+    private final AccountRepository accountRepository;
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     public ResponseEntity<ApiResponse<AccountResponse>> createAccount(CreateAccountRequest request) {
 
@@ -28,8 +29,8 @@ public class AccountService {
                 .balance(request.getBalance())
                 .build();
 
-        // Temp Storage
-        accounts.put(account.getId(), account);
+        // Repo
+        accountRepository.save(account);
 
         ///  To do Confirm to return Full bank account details or masked
         AccountResponse response =  AccountResponse.builder()
@@ -47,7 +48,7 @@ public class AccountService {
 
     public ResponseEntity<ApiResponse<AccountResponse>> getAccount(UUID id) {
 
-        Account account = accounts.get(id);
+        Account account = accountRepository.findById(id).orElse(null);
 
         if (account == null) {
             return ResponseEntity
