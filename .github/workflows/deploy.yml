@@ -75,7 +75,7 @@ jobs:
       - name: Resolve build artifact
         id: build-artifact
         run: |
-          JAR_FILE=$(find target -maxdepth 1 -type f -name '*.jar' ! -name 'original-*.jar' | head -n 1)
+          JAR_FILE=target/banking-0.0.1-SNAPSHOT.jar
           if [ -z "$JAR_FILE" ]; then
             echo "No packaged jar found in target/"
             ls -la target || true
