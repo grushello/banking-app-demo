@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy Banking App
 
 on:
   push:
@@ -14,21 +14,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 21 (Corretto)
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Build JAR
+      - name: Build with Maven
         run: |
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
-      - name: Stop old app (if running)
+      - name: Stop old application
         run: |
           pkill -f banking || true
+          pkill -f "java -jar" || true
 
-      - name: Start app in background (persistent on runner machine)
+      - name: Start application
         run: |
-          nohup java -jar target/*.jar --server.port=3500 > app.log 2>&1 &
+          setsid java -jar target/*.jar \
+            --server.port=3500 \
+            > app.log 2>&1 < /dev/null &
