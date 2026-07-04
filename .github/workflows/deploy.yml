@@ -32,3 +32,9 @@ jobs:
       - name: Start Spring Boot App
         run: |
           nohup java -jar target/*.jar --server.port=3500 > app.log 2>&1 &
+          sleep 15
+
+          echo "===== Application Log ====="
+          cat app.log
+
+          curl --fail http://localhost:3500 || exit 1
